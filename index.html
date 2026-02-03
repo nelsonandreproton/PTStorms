@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTStorms - Tempestades em Portugal</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">PTStorms</h1>
+            <span class="subtitle">Tempestades em Tempo Real</span>
+        </div>
+        <div class="header-status">
+            <span class="status-indicator" id="status-indicator"></span>
+            <span class="last-update" id="last-update">A carregar...</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Map Container -->
+        <div id="map"></div>
+
+        <!-- Legend Panel -->
+        <div class="legend-panel" id="legend-panel">
+            <div class="legend-header">
+                <h3>Intensidade</h3>
+                <button class="legend-toggle" id="legend-toggle" aria-label="Minimizar legenda">−</button>
+            </div>
+            <div class="legend-content" id="legend-content">
+                <div class="legend-section">
+                    <h4>Precipitação</h4>
+                    <div class="legend-items" id="precipitation-legend"></div>
+                </div>
+                <div class="legend-section">
+                    <h4>Avisos IPMA</h4>
+                    <div class="legend-items" id="warnings-legend"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warnings Panel -->
+        <div class="warnings-panel" id="warnings-panel">
+            <div class="warnings-header">
+                <h3>Avisos Ativos</h3>
+                <span class="warnings-count" id="warnings-count">0</span>
+            </div>
+            <div class="warnings-list" id="warnings-list">
+                <p class="no-warnings">Sem avisos ativos</p>
+            </div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <button class="control-btn" id="btn-refresh" title="Atualizar dados">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="btn-animation" title="Animação temporal">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <button class="control-btn active" id="btn-radar" title="Camada de radar">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="btn-warnings" title="Mostrar avisos">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Time Slider (for animation) -->
+        <div class="time-slider" id="time-slider" style="display: none;">
+            <input type="range" id="time-range" min="0" max="12" value="12">
+            <span class="time-label" id="time-label">Agora</span>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>A carregar dados...</p>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <!-- App Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/radar.js"></script>
+    <script src="js/warnings.js"></script>
+    <script src="js/legend.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
