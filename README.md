@@ -67,6 +67,11 @@ PTStorms/
 │   ├── warnings.js     # Integração IPMA
 │   ├── legend.js       # Legenda de cores
 │   └── app.js          # Aplicação principal
+├── termux/             # Deploy Android/Termux
+│   ├── deploy.sh       # Servidor local
+│   ├── start-background.sh
+│   ├── stop.sh
+│   └── TERMUX.md       # Documentação
 └── assets/
     └── icons/          # Ícones
 ```
@@ -126,6 +131,30 @@ PTStorms/
 ### Netlify / Vercel
 
 Basta conectar o repositório - deploy automático.
+
+### Termux (Android)
+
+Corre o PTStorms localmente no teu telemóvel Android:
+
+```bash
+# Instalar dependências
+pkg update && pkg install git python
+
+# Clonar e correr
+git clone https://github.com/nelsonandreproton/PTStorms.git
+cd PTStorms
+./termux/deploy.sh
+```
+
+Abre o browser em `http://localhost:8080`
+
+**Scripts disponíveis:**
+- `./termux/deploy.sh` - Servidor em primeiro plano
+- `./termux/start-background.sh` - Servidor em background
+- `./termux/stop.sh` - Parar servidor
+- `./termux/status.sh` - Ver estado
+
+Ver [documentação completa do Termux](termux/TERMUX.md).
 
 ## Licença
 
