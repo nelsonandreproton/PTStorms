@@ -299,7 +299,7 @@ html, body {
 /* Controls Panel */
 .controls-panel {
     position: absolute;
-    top: 20px;
+    top: 100px;
     left: 20px;
     display: flex;
     flex-direction: column;
@@ -465,7 +465,7 @@ html, body {
 
     .controls-panel {
         left: 10px;
-        top: 10px;
+        top: 90px;
     }
 
     .control-btn {
