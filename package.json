@@ -1,0 +1,17 @@
+{
+  "name": "ptstorms",
+  "version": "1.0.0",
+  "description": "Real-time storm tracking for Portugal",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": ["weather", "portugal", "storms", "radar", "ipma"],
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "jsdom": "^24.0.0"
+  }
+}

@@ -38,7 +38,7 @@ const RadarModule = (function() {
             {
                 opacity: opacity,
                 zIndex: 100,
-                attribution: '<a href="https://www.rainviewer.com/" target="_blank">RainViewer</a>'
+                attribution: '<a href="https://www.rainviewer.com/" target="_blank" rel="noopener noreferrer">RainViewer</a>'
             }
         );
     }
@@ -103,6 +103,7 @@ const RadarModule = (function() {
      */
     function clearLayers() {
         const map = MapModule.getMap();
+        if (!map) return;
         radarLayers.forEach(({ layer }) => {
             if (map.hasLayer(layer)) {
                 map.removeLayer(layer);
@@ -116,6 +117,7 @@ const RadarModule = (function() {
      */
     function showLayer(index) {
         const map = MapModule.getMap();
+        if (!map) return;
 
         // Hide all layers
         radarLayers.forEach(({ layer }) => {
@@ -137,7 +139,7 @@ const RadarModule = (function() {
      */
     function showCurrentLayer() {
         const pastCount = radarData?.radar?.past?.length || 0;
-        currentLayerIndex = pastCount - 1;
+        currentLayerIndex = Math.max(0, pastCount - 1);
         showLayer(currentLayerIndex);
     }
 
@@ -175,7 +177,7 @@ const RadarModule = (function() {
      * Start animation
      */
     function startAnimation() {
-        if (isAnimating) return;
+        if (isAnimating || radarLayers.length === 0) return;
 
         isAnimating = true;
         const timeSlider = document.getElementById('time-slider');
@@ -232,11 +234,11 @@ const RadarModule = (function() {
      */
     function toggleVisibility() {
         isVisible = !isVisible;
+        const map = MapModule.getMap();
 
         if (isVisible) {
             showLayer(currentLayerIndex);
-        } else {
-            const map = MapModule.getMap();
+        } else if (map) {
             radarLayers.forEach(({ layer }) => {
                 if (map.hasLayer(layer)) {
                     map.removeLayer(layer);

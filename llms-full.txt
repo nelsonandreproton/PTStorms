@@ -1,0 +1,82 @@
+# PTStorms - Full Technical Documentation
+
+## Overview
+PTStorms is a real-time storm tracking web application for Portugal. It displays interactive maps with precipitation radar overlays from RainViewer and meteorological warnings from IPMA (Instituto Português do Mar e da Atmosfera).
+
+## Architecture
+
+### Module Pattern
+The application uses the Revealing Module Pattern (IIFE) with isolated concerns:
+
+```
+App (js/app.js)           - Main controller, event listeners, auto-refresh
+├── MapModule (js/map.js)      - Leaflet map initialization, layer management
+├── RadarModule (js/radar.js)  - RainViewer API, animated radar tile layers
+├── WarningsModule (js/warnings.js) - IPMA API, warning markers and panels
+├── LegendModule (js/legend.js)     - UI legend rendering
+└── CONFIG (js/config.js)      - Central configuration object
+```
+
+### Script Loading Order
+Scripts must load in this order (defined in index.html):
+1. config.js - Configuration object
+2. map.js - Map module (depends on CONFIG)
+3. radar.js - Radar module (depends on CONFIG, MapModule)
+4. warnings.js - Warnings module (depends on CONFIG, MapModule)
+5. legend.js - Legend module (depends on CONFIG)
+6. app.js - Main app (depends on all modules)
+
+## API Integration
+
+### RainViewer API
+- Endpoint: https://api.rainviewer.com/public/weather-maps.json
+- Returns radar tile paths for past frames and nowcast (forecast)
+- Tiles loaded via: https://tilecache.rainviewer.com{path}/{size}/{z}/{x}/{y}/{scheme}/{smooth}_{snow}.png
+- Update interval: 5 minutes
+- No authentication required
+
+### IPMA Warnings API
+- Endpoint: https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json
+- Returns array of warning objects with:
+  - idAreaAviso: District code (e.g., "LSB" for Lisboa)
+  - awarenessLevelID: Severity (green, yellow, orange, red)
+  - awarenessTypeName: Warning type (e.g., "Precipitação", "Vento")
+  - startTime, endTime: ISO 8601 timestamps
+  - text: Optional description
+- Update interval: 10 minutes
+- No authentication required
+
+## Configuration (js/config.js)
+
+### Map Settings
+- Center: [39.5, -8.0] (Portugal)
+- Zoom: 7 (default), 5-12 (range)
+- Bounds: Portugal extent with padding
+
+### Districts Mapping
+CONFIG.districts maps IPMA district codes to names and coordinates:
+- Mainland: AVR, BJA, BRG, BGC, CBR, COI, EVR, FAR, GDA, LRA, LSB, PTG, PTO, STM, STB, VCT, VRL, VSE
+- Madeira: MCN, MCS, MRM, MPS
+- Azores: AOR, ACE, AOC
+
+### Warning Levels
+- green: Normal (filtered out)
+- yellow: Attention
+- orange: Moderate
+- red: Extreme
+
+## Security Measures
+- XSS protection: All API data escaped before DOM insertion
+- CSP header: Restricts scripts, styles, images, and connections
+- External links: rel="noopener noreferrer" on target="_blank"
+
+## Keyboard Shortcuts
+- R: Refresh data
+- P or Space: Toggle animation
+- L: Toggle radar layer
+- W: Toggle warnings panel
+
+## Deployment
+- GitHub Actions workflow deploys to GitHub Pages on push to main
+- No build step required (static HTML/CSS/JS)
+- All dependencies loaded via CDN (unpkg.com for Leaflet)

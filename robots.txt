@@ -1,0 +1,8 @@
+# PTStorms - Real-time storm tracking for Portugal
+# https://nelsonandreproton.github.io/PTStorms/
+
+User-agent: *
+Allow: /
+
+# Sitemap (if added in future)
+# Sitemap: https://nelsonandreproton.github.io/PTStorms/sitemap.xml

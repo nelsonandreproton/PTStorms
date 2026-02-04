@@ -7,6 +7,16 @@ const WarningsModule = (function() {
     let isVisible = false;
 
     /**
+     * Escape HTML to prevent XSS attacks
+     */
+    function escapeHtml(text) {
+        if (text == null) return '';
+        const div = document.createElement('div');
+        div.textContent = String(text);
+        return div.innerHTML;
+    }
+
+    /**
      * Fetch warnings from IPMA API
      */
     async function fetchWarnings() {
@@ -139,6 +149,7 @@ const WarningsModule = (function() {
      */
     function addMarkersToMap() {
         const map = MapModule.getMap();
+        if (!map) return;
 
         // Clear existing markers
         clearMarkers();
@@ -150,15 +161,15 @@ const WarningsModule = (function() {
                 icon: createWarningIcon(warning.level)
             });
 
-            // Create popup content
+            // Create popup content (escape user data to prevent XSS)
             const popupContent = `
-                <div class="popup-title">${warning.type}</div>
+                <div class="popup-title">${escapeHtml(warning.type)}</div>
                 <div class="popup-info">
-                    <strong>Região:</strong> ${warning.region}<br>
-                    <strong>Nível:</strong> <span style="color: ${CONFIG.warningColors[warning.level].color}">${warning.level.toUpperCase()}</span><br>
+                    <strong>Região:</strong> ${escapeHtml(warning.region)}<br>
+                    <strong>Nível:</strong> <span style="color: ${CONFIG.warningColors[warning.level]?.color || '#ecc94b'}">${escapeHtml(warning.level.toUpperCase())}</span><br>
                     <strong>Início:</strong> ${formatDateTime(warning.startTime)}<br>
                     <strong>Fim:</strong> ${formatDateTime(warning.endTime)}
-                    ${warning.text ? `<br><br>${warning.text}` : ''}
+                    ${warning.text ? `<br><br>${escapeHtml(warning.text)}` : ''}
                 </div>
             `;
 
@@ -176,11 +187,13 @@ const WarningsModule = (function() {
      */
     function clearMarkers() {
         const map = MapModule.getMap();
-        warningMarkers.forEach(marker => {
-            if (map.hasLayer(marker)) {
-                map.removeLayer(marker);
-            }
-        });
+        if (map) {
+            warningMarkers.forEach(marker => {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            });
+        }
         warningMarkers = [];
     }
 
@@ -217,18 +230,21 @@ const WarningsModule = (function() {
             return;
         }
 
-        warningsList.innerHTML = warnings.map(warning => `
-            <div class="warning-item ${warning.level}">
+        warningsList.innerHTML = warnings.map(warning => {
+            const safeLevel = escapeHtml(warning.level);
+            return `
+            <div class="warning-item ${safeLevel}">
                 <div class="warning-item-header">
-                    <span class="warning-type">${warning.type}</span>
-                    <span class="warning-level ${warning.level}">${warning.level}</span>
+                    <span class="warning-type">${escapeHtml(warning.type)}</span>
+                    <span class="warning-level ${safeLevel}">${safeLevel}</span>
                 </div>
-                <div class="warning-region">${warning.region}</div>
+                <div class="warning-region">${escapeHtml(warning.region)}</div>
                 <div class="warning-time">
                     ${formatDateTime(warning.startTime)} - ${formatDateTime(warning.endTime)}
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
     }
 
     /**
@@ -240,20 +256,21 @@ const WarningsModule = (function() {
         const panel = document.getElementById('warnings-panel');
         const btn = document.getElementById('btn-warnings');
 
-        if (isVisible) {
-            // Add markers to map
-            warningMarkers.forEach(marker => marker.addTo(map));
-            if (panel) panel.classList.add('visible');
-        } else {
-            // Remove markers from map
-            warningMarkers.forEach(marker => {
-                if (map.hasLayer(marker)) {
-                    map.removeLayer(marker);
-                }
-            });
-            if (panel) panel.classList.remove('visible');
+        if (map) {
+            if (isVisible) {
+                // Add markers to map
+                warningMarkers.forEach(marker => marker.addTo(map));
+            } else {
+                // Remove markers from map
+                warningMarkers.forEach(marker => {
+                    if (map.hasLayer(marker)) {
+                        map.removeLayer(marker);
+                    }
+                });
+            }
         }
 
+        if (panel) panel.classList.toggle('visible', isVisible);
         if (btn) btn.classList.toggle('active', isVisible);
 
         return isVisible;

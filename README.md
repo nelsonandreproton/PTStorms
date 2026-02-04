@@ -67,8 +67,8 @@ PTStorms/
 │   ├── warnings.js     # Integração IPMA
 │   ├── legend.js       # Legenda de cores
 │   └── app.js          # Aplicação principal
-└── assets/
-    └── icons/          # Ícones
+└── tests/              # Testes unitários
+    └── *.test.js
 ```
 
 ## Fontes de Dados
@@ -108,12 +108,20 @@ PTStorms/
 | `L` | Toggle camada de radar |
 | `W` | Toggle painel de avisos |
 
+## Testes
+
+```bash
+npm install    # Instalar dependências
+npm test       # Correr testes
+```
+
 ## Tecnologias
 
 - [Leaflet.js](https://leafletjs.com/) - Mapas interativos
 - [RainViewer API](https://www.rainviewer.com/api.html) - Dados de radar
 - [IPMA API](https://api.ipma.pt/) - Avisos meteorológicos
 - [CartoDB](https://carto.com/) - Tiles do mapa base
+- [Vitest](https://vitest.dev/) - Framework de testes
 
 ## Deploy
 

@@ -1,0 +1,23 @@
+# PTStorms
+
+> Real-time storm tracking web application for Portugal
+
+PTStorms displays interactive maps with precipitation radar overlays and meteorological warnings from official Portuguese sources.
+
+## Features
+- Live precipitation radar from RainViewer API
+- IPMA (Portuguese Met Office) weather warnings
+- Animated radar playback (past 2 hours + forecast)
+- Dark theme optimized for weather viewing
+
+## Data Sources
+- Radar: api.rainviewer.com (5-minute updates)
+- Warnings: api.ipma.pt (10-minute updates)
+
+## Technical Stack
+- Vanilla JavaScript (no framework)
+- Leaflet.js for mapping
+- Static site hosted on GitHub Pages
+
+## Documentation
+For full technical details, see: llms-full.txt
