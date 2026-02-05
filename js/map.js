@@ -15,9 +15,14 @@ const MapModule = (function() {
             zoom: CONFIG.map.zoom,
             minZoom: CONFIG.map.minZoom,
             maxZoom: CONFIG.map.maxZoom,
-            zoomControl: true,
+            zoomControl: false,
             attributionControl: true
         });
+
+        // Add zoom control to top-left, aligned with control buttons
+        L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
 
         // Set max bounds to keep focus on Portugal
         map.setMaxBounds([

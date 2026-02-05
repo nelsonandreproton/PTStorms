@@ -27,6 +27,9 @@ global.L = {
   polyline: vi.fn().mockReturnValue(mockLayer),
   marker: vi.fn().mockReturnValue(mockLayer),
   divIcon: vi.fn().mockReturnValue({}),
+  control: {
+    zoom: vi.fn().mockReturnValue(mockLayer),
+  },
 };
 
 // Mock fetch

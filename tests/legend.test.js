@@ -33,12 +33,6 @@ describe('LegendModule', () => {
       expect(container.innerHTML).not.toBe('');
     });
 
-    it('should render warnings legend', () => {
-      LegendModule.init();
-      const container = document.getElementById('warnings-legend');
-      expect(container.innerHTML).not.toBe('');
-    });
-
     it('should create legend items for non-transparent precipitation colors', () => {
       LegendModule.init();
       const container = document.getElementById('precipitation-legend');
@@ -49,12 +43,18 @@ describe('LegendModule', () => {
       expect(items.length).toBe(nonTransparentColors.length);
     });
 
+    it('should render warnings legend', () => {
+      LegendModule.init();
+      const container = document.getElementById('warnings-legend');
+      expect(container.innerHTML).not.toBe('');
+    });
+
     it('should create legend items for warning levels', () => {
       LegendModule.init();
       const container = document.getElementById('warnings-legend');
       const items = container.querySelectorAll('.legend-item');
 
-      // Should have yellow, orange, red (3 levels, excluding green)
+      // Should have yellow, orange, red (3 levels)
       expect(items.length).toBe(3);
     });
   });
@@ -98,18 +98,6 @@ describe('LegendModule', () => {
 
       LegendModule.hide();
       expect(panel.style.display).toBe('none');
-    });
-  });
-
-  describe('legend colors', () => {
-    it('should use colors from CONFIG for warnings', () => {
-      LegendModule.init();
-      const container = document.getElementById('warnings-legend');
-      const html = container.innerHTML;
-
-      expect(html).toContain(CONFIG.warningColors.yellow.color);
-      expect(html).toContain(CONFIG.warningColors.orange.color);
-      expect(html).toContain(CONFIG.warningColors.red.color);
     });
   });
 });

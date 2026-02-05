@@ -115,13 +115,15 @@ html, body {
 /* Legend Panel */
 .legend-panel {
     position: absolute;
-    bottom: 30px;
-    left: 20px;
+    top: 20px;
+    left: 80px;
     background: var(--bg-panel);
     border-radius: 12px;
     padding: 16px;
     min-width: 180px;
     max-width: 220px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
     box-shadow: var(--shadow);
     z-index: 1000;
     border: 1px solid var(--border-color);
@@ -299,7 +301,7 @@ html, body {
 /* Controls Panel */
 .controls-panel {
     position: absolute;
-    top: 100px;
+    top: 20px;
     left: 20px;
     display: flex;
     flex-direction: column;
@@ -414,15 +416,35 @@ html, body {
 }
 
 /* Leaflet Customization */
+.leaflet-top.leaflet-left {
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+
 .leaflet-control-zoom {
     border: none !important;
     box-shadow: var(--shadow) !important;
+    margin: 0 !important;
 }
 
 .leaflet-control-zoom a {
     background: var(--bg-panel) !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border-color) !important;
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 18px !important;
+    border-radius: 10px !important;
+}
+
+.leaflet-control-zoom a:first-child {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.leaflet-control-zoom a:last-child {
+    border-radius: 0 0 10px 10px !important;
 }
 
 .leaflet-control-zoom a:hover {
@@ -450,11 +472,12 @@ html, body {
     }
 
     .legend-panel {
-        left: 10px;
-        bottom: 20px;
+        left: 60px;
+        top: 10px;
         min-width: 150px;
         padding: 12px;
     }
+
 
     .warnings-panel {
         right: 10px;
@@ -465,7 +488,7 @@ html, body {
 
     .controls-panel {
         left: 10px;
-        top: 90px;
+        top: 10px;
     }
 
     .control-btn {
